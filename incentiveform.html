@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incentive Claim Form | NASA</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-dark: #1a3c34;
+            --primary-green: #2d6a4f;
+            --accent-blue: #0077b6;
+            --soft-blue: #e0f2fe;
+            --light-bg: #f8fafc;
+            --white: #ffffff;
+            --text-main: #334155;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- SIDEBAR --- */
+        nav {
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, var(--primary-dark) 0%, #0f172a 100%);
+            color: white;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+        }
+
+        .nav-logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: 1px;
+        }
+
+        .nav-logo i {
+            color: #4ade80;
+        }
+
+        .nav-item {
+            padding: 14px 18px;
+            margin-bottom: 0.8rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #94a3b8;
+            text-decoration: none;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(45, 106, 79, 0.3);
+            color: white;
+            border-left: 4px solid #4ade80;
+        }
+
+        /* --- MAIN CONTENT --- */
+        main {
+            flex-grow: 1;
+            padding: 2.5rem;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        .header {
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            color: var(--primary-dark);
+        }
+
+        /* --- FORM STYLES --- */
+        .form-container {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            max-width: 800px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .form-section h2 {
+            font-size: 1.2rem;
+            color: var(--primary-green);
+            margin-bottom: 1.2rem;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--soft-blue);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+
+        input, select, textarea {
+            padding: 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.1);
+        }
+
+        .submit-btn {
+            background-color: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        @media (max-width: 900px) {
+            nav { width: 80px; padding: 2rem 0.5rem; }
+            .nav-logo span, .nav-item span { display: none; }
+            .form-grid { grid-template-columns: 1fr; }
+            .form-group.full-width { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-logo">
+            <i class="fas fa-leaf"></i> <span>NASA</span>
+        </div>
+        
+        <a href="index.html" class="nav-item">
+            <i class="fas fa-chart-pie"></i> <span>Executive Summary</span>
+        </a>
+        <a href="incentiveform.html" class="nav-item active">
+            <i class="fas fa-file-invoice-dollar"></i> <span>Incentive Claim</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-clipboard-check"></i> <span>Audit Protocols</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-cog"></i> <span>System Status</span>
+        </a>
+    </nav>
+
+    <main>
+        <div class="header">
+            <h1>Auditor Incentive Claim Form</h1>
+            <p style="color: #64748b;">Submit your verified audit logs for compensation processing.</p>
+        </div>
+
+        <form class="form-container" onsubmit="event.preventDefault(); alert('Claim submitted for processing.');">
+            <div class="form-section">
+                <h2>Auditor Information</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="auditor-name">Full Name</label>
+                        <input type="text" id="auditor-name" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="auditor-id">Auditor ID</label>
+                        <input type="text" id="auditor-id" placeholder="NASA-AUD-XXXX" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="email">Official Email</label>
+                        <input type="email" id="email" placeholder="auditor@nasa-agri.org" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Claim Details</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="node-id">Node Reference</label>
+                        <input type="text" id="node-id" placeholder="#NODE-X20" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="audit-type">Audit Category</label>
+                        <select id="audit-type">
+                            <option>Soil Moisture Variance</option>
+                            <option>Nutrient Density</option>
+                            <option>Pesticide Trace Scan</option>
+                            <option>Water Conservation</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Completion Date</label>
+                        <input type="date" id="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Incentive Tier</label>
+                        <select id="amount">
+                            <option value="50">Tier 1 - Standard ($50.00)</option>
+                            <option value="100">Tier 2 - Advanced ($100.00)</option>
+                            <option value="250">Tier 3 - Specialized ($250.00)</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="summary">Audit Summary & Verification Code</label>
+                        <textarea id="summary" placeholder="Provide a brief summary of findings and the system-generated verification hash..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-paper-plane"></i> Submit Incentive Claim
+            </button>
+        </form>
+    </main>
+
+</body>
+</html>

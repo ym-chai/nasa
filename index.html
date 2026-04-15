@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA | Networked Agricultural Standards Audit</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-dark: #1a3c34;
+            --primary-green: #2d6a4f;
+            --accent-blue: #0077b6;
+            --soft-blue: #e0f2fe;
+            --light-bg: #f8fafc;
+            --white: #ffffff;
+            --text-main: #334155;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- SIDEBAR --- */
+        nav {
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, var(--primary-dark) 0%, #0f172a 100%);
+            color: white;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+        }
+
+        .nav-logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: 1px;
+        }
+
+        .nav-logo i {
+            color: #4ade80;
+        }
+
+        .nav-item {
+            padding: 14px 18px;
+            margin-bottom: 0.8rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #94a3b8;
+            text-decoration: none;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(45, 106, 79, 0.3);
+            color: white;
+            border-left: 4px solid #4ade80;
+        }
+
+        /* --- MAIN CONTENT --- */
+        main {
+            flex-grow: 1;
+            padding: 2.5rem;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .header-title h1 {
+            font-size: 2rem;
+            color: var(--primary-dark);
+        }
+
+        .header-title p {
+            color: #64748b;
+            margin-top: 5px;
+        }
+
+        /* --- DASHBOARD CARDS --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card .icon-box {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .green-box { background: #dcfce7; color: #166534; }
+        .blue-box { background: #e0f2fe; color: #0369a1; }
+        .orange-box { background: #fff7ed; color: #c2410c; }
+
+        .stat-card h3 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: #64748b;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card .value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin: 10px 0;
+        }
+
+        /* --- CONTENT SECTION --- */
+        .content-section {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            color: var(--primary-dark);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 15px;
+            background: #f1f5f9;
+            color: #475569;
+            font-weight: 600;
+        }
+
+        .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        /* --- DRAG & DROP FEATURE STYLES --- */
+        #drop-zone {
+            border: 2px dashed var(--accent-blue);
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            background: var(--soft-blue);
+            color: var(--accent-blue);
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+            cursor: pointer;
+        }
+
+        #drop-zone.drag-over {
+            background: #bae6fd;
+            border-color: var(--primary-green);
+            transform: scale(1.01);
+        }
+
+        #upload-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .upload-item {
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .upload-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .upload-item textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            resize: vertical;
+            font-size: 0.9rem;
+            min-height: 80px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- BUTTON STYLES --- */
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        #print-btn, .nav-incentive-btn {
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: opacity 0.3s;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        #print-btn { background-color: var(--accent-blue); }
+        .nav-incentive-btn { background-color: var(--primary-green); }
+
+        #print-btn:hover, .nav-incentive-btn:hover {
+            opacity: 0.8;
+        }
+
+        /* --- PRINT LAYOUT OPTIMIZATION --- */
+        @media print {
+            nav, .btn-group, #drop-zone, .nav-item, .nav-logo {
+                display: none !important;
+            }
+            body {
+                background-color: white !important;
+                height: auto;
+                overflow: visible;
+            }
+            main {
+                padding: 0;
+                margin: 0;
+                width: 100%;
+                overflow: visible;
+            }
+            .content-section, .stat-card {
+                box-shadow: none !important;
+                border: 1px solid #eee !important;
+                page-break-inside: avoid;
+            }
+            .upload-item textarea {
+                border: none;
+                background: transparent;
+            }
+        }
+
+        @media (max-width: 900px) {
+            nav { width: 80px; padding: 2rem 0.5rem; }
+            .nav-logo span, .nav-item span { display: none; }
+            .nav-item { justify-content: center; }
+            .sidebar-width { --sidebar-width: 80px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-logo">
+            <i class="fas fa-leaf"></i> <span>NASA</span>
+        </div>
+        
+        <a href="index.html" class="nav-item active">
+            <i class="fas fa-chart-pie"></i> <span>Executive Summary</span>
+        </a>
+        <a href="incentiveform.html" class="nav-item">
+            <i class="fas fa-file-invoice-dollar"></i> <span>Incentive Claim</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-clipboard-check"></i> <span>Audit Protocols</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-flask"></i> <span>Standards Lab</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-cog"></i> <span>System Status</span>
+        </a>
+    </nav>
+
+    <main>
+        <div class="header">
+            <div class="header-title">
+                <h1>Networked Agricultural Standards Audit</h1>
+                <p>Ensuring global food security through interconnected verification nodes.</p>
+            </div>
+            <div class="btn-group">
+                <div style="font-weight: 700; color: var(--accent-blue);">April 2026</div>
+                <small style="color: #94a3b8;">System Integrity: Optimal</small>
+                <button id="print-btn" onclick="window.print()">
+                    <i class="fas fa-print"></i> Print Dashboard
+                </button>
+                <a href="incentiveform.html" class="nav-incentive-btn">
+                    <i class="fas fa-hand-holding-usd"></i> Claim Incentive
+                </a>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="icon-box green-box"><i class="fas fa-seedling"></i></div>
+                <h3>Active Compliance</h3>
+                <div class="value">98.4%</div>
+                <div style="color: #166534; font-size: 0.85rem;"><i class="fas fa-arrow-up"></i> 1.2% from last qtr</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="icon-box blue-box"><i class="fas fa-broadcast-tower"></i></div>
+                <h3>Network Nodes</h3>
+                <div class="value">14,209</div>
+                <div style="color: #64748b; font-size: 0.85rem;">Distributed across 84 regions</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="icon-box orange-box"><i class="fas fa-images"></i></div>
+                <h3>Photos Uploaded</h3>
+                <div class="value" id="photo-counter">0</div>
+                <div style="color: #c2410c; font-size: 0.85rem;">Live Session Count</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="icon-box green-box"><i class="fas fa-check-double"></i></div>
+                <h3>Audits Verified</h3>
+                <div class="value">2.4M</div>
+                <div style="color: #64748b; font-size: 0.85rem;">Real-time ledger processing</div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-title">
+                <i class="fas fa-camera"></i>
+                <h2>Field Audit Documentation</h2>
+            </div>
+            <div id="drop-zone">
+                <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                <p>Drag and drop field photos here to begin audit rating</p>
+                <input type="file" id="file-input" multiple accept="image/*" style="display: none;">
+            </div>
+            <div id="upload-container">
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-title">
+                <i class="fas fa-list-ul"></i>
+                <h2>Real-Time Audit Stream</h2>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Node ID</th>
+                        <th>Region</th>
+                        <th>Standard Category</th>
+                        <th>Timestamp</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#NASA-SE-42</td>
+                        <td>Southeast Asia</td>
+                        <td>Soil Irrigation Metrics</td>
+                        <td>09:14:22 AM</td>
+                        <td><span class="badge">VERIFIED</span></td>
+                    </tr>
+                    <tr>
+                        <td>#NASA-EU-19</td>
+                        <td>European Union</td>
+                        <td>Nitrogen Level Safety</td>
+                        <td>09:12:05 AM</td>
+                        <td><span class="badge">VERIFIED</span></td>
+                    </tr>
+                    <tr>
+                        <td>#NASA-NA-88</td>
+                        <td>North America</td>
+                        <td>Crop Rotation Cycle</td>
+                        <td>09:08:45 AM</td>
+                        <td><span class="badge">VERIFIED</span></td>
+                    </tr>
+                    <tr>
+                        <td>#NASA-AF-07</td>
+                        <td>East Africa</td>
+                        <td>Water Conservation Std</td>
+                        <td>09:01:12 AM</td>
+                        <td><span class="badge">VERIFIED</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="content-section">
+            <div class="section-title">
+                <i class="fas fa-info-circle"></i>
+                <h2>Project Overview</h2>
+            </div>
+            <p style="line-height: 1.6; color: #475569; max-width: 800px;">
+                The NASA initiative bridges the gap between local farming practices and international agricultural standards. By utilizing a <strong>networked architecture</strong>, audits are no longer static yearly events but continuous data streams that ensure sustainability, safety, and efficiency in the global food supply chain.
+            </p>
+        </div>
+    </main>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const uploadContainer = document.getElementById('upload-container');
+        const fileInput = document.getElementById('file-input');
+        const photoCounter = document.getElementById('photo-counter');
+        
+        let currentPhotoCount = 0;
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => dropZone.classList.add('drag-over'), false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => dropZone.classList.remove('drag-over'), false);
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        });
+
+        function handleFiles(files) {
+            ([...files]).forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    currentPhotoCount++;
+                    photoCounter.innerText = currentPhotoCount;
+
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        createPreview(e.target.result);
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        function createPreview(src) {
+            const item = document.createElement('div');
+            item.className = 'upload-item';
+            
+            item.innerHTML = `
+                <img src="${src}" alt="Audit Preview">
+                <textarea placeholder="Enter audit rating comment for this documentation..."></textarea>
+            `;
+            
+            uploadContainer.appendChild(item);
+        }
+    </script>
+</body>
+</html>
