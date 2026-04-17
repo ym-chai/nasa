@@ -195,6 +195,103 @@
             color: #166534;
         }
 
+        /* --- SYSTEM SETTINGS STYLES --- */
+        .settings-container {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 2rem;
+        }
+
+        .settings-form-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            margin-bottom: 1rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .input-group label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .settings-form-row input {
+            padding: 10px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        /* Work Description Pill Management */
+        .desc-manager {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .pill-display {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+            min-height: 35px;
+            padding: 5px;
+            background: white;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+        }
+
+        .work-desc-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--soft-blue);
+            color: var(--accent-blue);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .work-desc-pill i {
+            cursor: pointer;
+            color: #ef4444;
+        }
+
+        .add-entry-btn {
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            height: 42px;
+        }
+
+        .add-entry-btn:hover { background: var(--primary-dark); }
+
+        .btn-small {
+            padding: 10px 15px;
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
         /* --- DRAG & DROP FEATURE STYLES --- */
         #drop-zone {
             border: 2px dashed var(--accent-blue);
@@ -285,7 +382,7 @@
 
         /* --- PRINT LAYOUT OPTIMIZATION --- */
         @media print {
-            nav, .btn-group, #drop-zone, .nav-item, .nav-logo {
+            nav, .btn-group, #drop-zone, .nav-item, .nav-logo, .settings-container {
                 display: none !important;
             }
             body {
@@ -304,10 +401,6 @@
                 border: 1px solid #eee !important;
                 page-break-inside: avoid;
             }
-            .upload-item textarea {
-                border: none;
-                background: transparent;
-            }
         }
 
         @media (max-width: 900px) {
@@ -315,359 +408,6 @@
             .nav-logo span, .nav-item span { display: none; }
             .nav-item { justify-content: center; }
             .sidebar-width { --sidebar-width: 80px; }
-        }
-
-        /* =====================================================
-           SYSTEM SETTINGS OVERLAY
-        ===================================================== */
-        #system-settings-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.55);
-            z-index: 1000;
-            align-items: flex-start;
-            justify-content: flex-end;
-        }
-
-        #system-settings-overlay.open {
-            display: flex;
-        }
-
-        #settings-panel {
-            width: 820px;
-            max-width: 96vw;
-            height: 100vh;
-            background: var(--white);
-            box-shadow: -6px 0 40px rgba(0,0,0,0.15);
-            display: flex;
-            flex-direction: column;
-            animation: slideIn 0.28s ease;
-            overflow: hidden;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to   { transform: translateX(0);    opacity: 1; }
-        }
-
-        .settings-header {
-            background: linear-gradient(135deg, var(--primary-dark), #0f172a);
-            color: white;
-            padding: 1.6rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-shrink: 0;
-        }
-
-        .settings-header h2 {
-            font-size: 1.3rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .settings-header h2 i { color: #4ade80; }
-
-        .settings-close-btn {
-            background: rgba(255,255,255,0.12);
-            border: none;
-            color: white;
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .settings-close-btn:hover { background: rgba(255,255,255,0.25); }
-
-        .settings-tabs {
-            display: flex;
-            border-bottom: 2px solid #e2e8f0;
-            background: #f8fafc;
-            flex-shrink: 0;
-        }
-
-        .settings-tab {
-            padding: 14px 24px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #64748b;
-            border-bottom: 3px solid transparent;
-            margin-bottom: -2px;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .settings-tab:hover { color: var(--primary-dark); }
-
-        .settings-tab.active {
-            color: var(--primary-green);
-            border-bottom-color: var(--primary-green);
-            background: white;
-        }
-
-        .settings-body {
-            flex: 1;
-            overflow-y: auto;
-            padding: 2rem;
-        }
-
-        .tab-pane { display: none; }
-        .tab-pane.active { display: block; }
-
-        /* ---- Piece-Rated Audit List Styles ---- */
-        .pral-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1.5rem;
-        }
-
-        .pral-header h3 {
-            font-size: 1.1rem;
-            color: var(--primary-dark);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-add-sector {
-            background: var(--primary-green);
-            color: white;
-            border: none;
-            padding: 9px 18px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            transition: opacity 0.2s;
-        }
-
-        .btn-add-sector:hover { opacity: 0.85; }
-
-        /* Sector Card */
-        .sector-card {
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-            overflow: hidden;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .sector-card-header {
-            background: linear-gradient(90deg, #f1f5f9, #e8f5e9);
-            padding: 14px 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .sector-name-input {
-            font-weight: 700;
-            font-size: 1rem;
-            color: var(--primary-dark);
-            border: none;
-            background: transparent;
-            outline: none;
-            width: 60%;
-            border-bottom: 2px dashed #cbd5e0;
-            padding: 2px 6px;
-        }
-
-        .sector-name-input:focus { border-bottom-color: var(--primary-green); }
-
-        .sector-actions {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .btn-sm {
-            padding: 6px 14px;
-            border-radius: 6px;
-            border: none;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            transition: opacity 0.2s;
-        }
-
-        .btn-sm:hover { opacity: 0.8; }
-
-        .btn-add-work { background: #dbeafe; color: #1e40af; }
-        .btn-delete-sector { background: #fee2e2; color: #b91c1c; }
-
-        /* Work Description table inside sector */
-        .work-table-wrap {
-            overflow-x: auto;
-        }
-
-        .work-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .work-table th {
-            text-align: left;
-            padding: 11px 14px;
-            background: #f8fafc;
-            color: #475569;
-            font-size: 0.82rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .work-table td {
-            padding: 10px 14px;
-            border-bottom: 1px solid #f1f5f9;
-            vertical-align: middle;
-        }
-
-        .work-table tr:last-child td { border-bottom: none; }
-
-        .work-table input[type="text"],
-        .work-table input[type="number"] {
-            width: 100%;
-            padding: 7px 10px;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            font-size: 0.88rem;
-            color: var(--text-main);
-            background: #f8fafc;
-            transition: border-color 0.2s;
-            outline: none;
-        }
-
-        .work-table input:focus {
-            border-color: var(--primary-green);
-            background: white;
-        }
-
-        .rate-input-wrap {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .rate-prefix {
-            font-weight: 700;
-            color: #475569;
-            font-size: 0.9rem;
-        }
-
-        .btn-delete-row {
-            background: none;
-            border: none;
-            color: #ef4444;
-            cursor: pointer;
-            font-size: 1rem;
-            padding: 4px 8px;
-            border-radius: 5px;
-            transition: background 0.2s;
-        }
-
-        .btn-delete-row:hover { background: #fee2e2; }
-
-        /* Empty state */
-        .empty-state {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: #94a3b8;
-        }
-
-        .empty-state i {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        /* Save / Export bar */
-        .pral-footer {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid #e2e8f0;
-        }
-
-        .btn-save-list {
-            background: var(--primary-green);
-            color: white;
-            border: none;
-            padding: 10px 22px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: opacity 0.2s;
-        }
-
-        .btn-save-list:hover { opacity: 0.85; }
-
-        .btn-export-list {
-            background: var(--accent-blue);
-            color: white;
-            border: none;
-            padding: 10px 22px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: opacity 0.2s;
-        }
-
-        .btn-export-list:hover { opacity: 0.85; }
-
-        /* Toast notification */
-        #toast {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #1a3c34;
-            color: white;
-            padding: 12px 22px;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            z-index: 9999;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.3s ease;
-            pointer-events: none;
-        }
-
-        #toast.show {
-            opacity: 1;
-            transform: translateY(0);
         }
     </style>
 </head>
@@ -690,8 +430,7 @@
         <a href="#" class="nav-item">
             <i class="fas fa-flask"></i> <span>Standards Lab</span>
         </a>
-        <!-- CHANGED: System Status → System Settings -->
-        <a href="#" class="nav-item" id="open-settings-btn">
+        <a href="#system-settings" class="nav-item">
             <i class="fas fa-cog"></i> <span>System Settings</span>
         </a>
     </nav>
@@ -712,6 +451,64 @@
                     <i class="fas fa-hand-holding-usd"></i> Claim Incentive
                 </a>
             </div>
+        </div>
+
+        <div id="system-settings" class="content-section">
+            <div class="section-title">
+                <i class="fas fa-tools"></i>
+                <h2>Piece-Rated Contract Audit List</h2>
+            </div>
+            
+            <div class="settings-container">
+                <div class="settings-form-row">
+                    <div class="input-group">
+                        <label>Audit Sector</label>
+                        <input type="text" id="new-sector" placeholder="e.g. Irrigation Management">
+                    </div>
+                    <div class="input-group">
+                        <label>Standard Rate</label>
+                        <input type="text" id="new-rate" placeholder="e.g. $15.00/unit">
+                    </div>
+                </div>
+
+                <div class="input-group" style="margin-bottom: 1rem;">
+                    <label>Work Descriptions (Add multiple for this sector)</label>
+                    <div class="desc-manager">
+                        <input type="text" id="new-desc-input" placeholder="Type a task..." style="flex:1;">
+                        <button class="btn-small" onclick="addPill()">Add Task</button>
+                    </div>
+                    <div id="pill-display" class="pill-display">
+                        </div>
+                </div>
+
+                <button class="add-entry-btn" onclick="saveAuditEntry()">
+                    <i class="fas fa-save"></i> Save Contract Entry
+                </button>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Sector</th>
+                        <th>Work Description</th>
+                        <th>Rate</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="audit-list-body">
+                    <tr>
+                        <td><strong>Soil Analytics</strong></td>
+                        <td>
+                            <div class="desc-manager" style="flex-wrap: wrap;">
+                                <span class="work-desc-pill">PH Testing</span>
+                                <span class="work-desc-pill">Moisture Logging</span>
+                            </div>
+                        </td>
+                        <td>$12.50 / node</td>
+                        <td><span class="badge">ACTIVE</span></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
         <div class="stats-grid">
@@ -788,99 +585,69 @@
                         <td>09:12:05 AM</td>
                         <td><span class="badge">VERIFIED</span></td>
                     </tr>
-                    <tr>
-                        <td>#NASA-NA-88</td>
-                        <td>North America</td>
-                        <td>Crop Rotation Cycle</td>
-                        <td>09:08:45 AM</td>
-                        <td><span class="badge">VERIFIED</span></td>
-                    </tr>
-                    <tr>
-                        <td>#NASA-AF-07</td>
-                        <td>East Africa</td>
-                        <td>Water Conservation Std</td>
-                        <td>09:01:12 AM</td>
-                        <td><span class="badge">VERIFIED</span></td>
-                    </tr>
                 </tbody>
             </table>
         </div>
-
-        <div class="content-section">
-            <div class="section-title">
-                <i class="fas fa-info-circle"></i>
-                <h2>Project Overview</h2>
-            </div>
-            <p style="line-height: 1.6; color: #475569; max-width: 800px;">
-                The NASA initiative bridges the gap between local farming practices and international agricultural standards. By utilizing a <strong>networked architecture</strong>, audits are no longer static yearly events but continuous data streams that ensure sustainability, safety, and efficiency in the global food supply chain.
-            </p>
-        </div>
     </main>
 
-    <!-- =====================================================
-         SYSTEM SETTINGS OVERLAY PANEL
-    ====================================================== -->
-    <div id="system-settings-overlay">
-        <div id="settings-panel">
-            <div class="settings-header">
-                <h2><i class="fas fa-cog"></i> System Settings</h2>
-                <button class="settings-close-btn" id="close-settings-btn" title="Close">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-
-            <div class="settings-tabs">
-                <div class="settings-tab active" data-tab="piece-rated">
-                    <i class="fas fa-file-invoice-dollar"></i> Piece-Rated Contract Audit List
-                </div>
-                <!-- Additional tabs can be added here in future without touching existing logic -->
-            </div>
-
-            <div class="settings-body">
-
-                <!-- TAB: Piece-Rated Contract Audit List -->
-                <div class="tab-pane active" id="tab-piece-rated">
-
-                    <div class="pral-header">
-                        <h3><i class="fas fa-clipboard-list" style="color:var(--primary-green)"></i> Piece-Rated Contract Audit List</h3>
-                        <button class="btn-add-sector" id="btn-add-sector">
-                            <i class="fas fa-plus-circle"></i> Add Sector
-                        </button>
-                    </div>
-
-                    <div id="sectors-container">
-                        <!-- Sectors rendered here by JS -->
-                    </div>
-
-                    <div id="pral-empty" class="empty-state">
-                        <i class="fas fa-layer-group"></i>
-                        <p style="font-size:1rem; font-weight:600; margin-bottom:6px;">No sectors added yet</p>
-                        <p style="font-size:0.85rem;">Click <strong>Add Sector</strong> to begin building your Piece-Rated Contract Audit List.</p>
-                    </div>
-
-                    <div class="pral-footer">
-                        <button class="btn-export-list" id="btn-export-csv">
-                            <i class="fas fa-file-csv"></i> Export CSV
-                        </button>
-                        <button class="btn-save-list" id="btn-save-list">
-                            <i class="fas fa-save"></i> Save List
-                        </button>
-                    </div>
-
-                </div>
-                <!-- End Piece-Rated Tab -->
-
-            </div>
-        </div>
-    </div>
-
-    <!-- Toast Notification -->
-    <div id="toast"><i class="fas fa-check-circle"></i> <span id="toast-msg">Saved successfully!</span></div>
-
     <script>
-        /* =====================================================
-           ORIGINAL DRAG & DROP LOGIC — UNTOUCHED
-        ===================================================== */
+        // --- System Settings Logic ---
+        let currentDescriptions = [];
+
+        function addPill() {
+            const input = document.getElementById('new-desc-input');
+            const val = input.value.trim();
+            if(val && !currentDescriptions.includes(val)) {
+                currentDescriptions.push(val);
+                renderPills();
+                input.value = '';
+            }
+        }
+
+        function removePill(index) {
+            currentDescriptions.splice(index, 1);
+            renderPills();
+        }
+
+        function renderPills() {
+            const container = document.getElementById('pill-display');
+            container.innerHTML = currentDescriptions.map((desc, i) => `
+                <div class="work-desc-pill">
+                    ${desc} <i class="fas fa-times-circle" onclick="removePill(${i})"></i>
+                </div>
+            `).join('');
+        }
+
+        function saveAuditEntry() {
+            const sector = document.getElementById('new-sector').value.trim();
+            const rate = document.getElementById('new-rate').value.trim();
+            const tbody = document.getElementById('audit-list-body');
+
+            if(!sector || !rate || currentDescriptions.length === 0) {
+                alert("Please fill in sector, rate, and at least one description.");
+                return;
+            }
+
+            const tr = document.createElement('tr');
+            const descHtml = currentDescriptions.map(d => `<span class="work-desc-pill">${d}</span>`).join('');
+
+            tr.innerHTML = `
+                <td><strong>${sector}</strong></td>
+                <td><div class="desc-manager" style="flex-wrap: wrap;">${descHtml}</div></td>
+                <td>${rate}</td>
+                <td><span class="badge">ACTIVE</span></td>
+            `;
+
+            tbody.appendChild(tr);
+
+            // Reset Form
+            document.getElementById('new-sector').value = '';
+            document.getElementById('new-rate').value = '';
+            currentDescriptions = [];
+            renderPills();
+        }
+
+        // --- Existing Logic ---
         const dropZone = document.getElementById('drop-zone');
         const uploadContainer = document.getElementById('upload-container');
         const fileInput = document.getElementById('file-input');
@@ -890,18 +657,14 @@
 
         dropZone.addEventListener('click', () => fileInput.click());
 
-        fileInput.addEventListener('change', (e) => {
-            handleFiles(e.target.files);
-        });
+        fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
 
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, preventDefaults, false);
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            }, false);
         });
-
-        function preventDefaults (e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
 
         ['dragenter', 'dragover'].forEach(eventName => {
             dropZone.addEventListener(eventName, () => dropZone.classList.add('drag-over'), false);
@@ -911,22 +674,15 @@
             dropZone.addEventListener(eventName, () => dropZone.classList.remove('drag-over'), false);
         });
 
-        dropZone.addEventListener('drop', (e) => {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            handleFiles(files);
-        });
+        dropZone.addEventListener('drop', (e) => handleFiles(e.dataTransfer.files));
 
         function handleFiles(files) {
             ([...files]).forEach(file => {
                 if (file.type.startsWith('image/')) {
                     currentPhotoCount++;
                     photoCounter.innerText = currentPhotoCount;
-
                     const reader = new FileReader();
-                    reader.onload = function(e) {
-                        createPreview(e.target.result);
-                    }
+                    reader.onload = (e) => createPreview(e.target.result);
                     reader.readAsDataURL(file);
                 }
             });
@@ -935,242 +691,11 @@
         function createPreview(src) {
             const item = document.createElement('div');
             item.className = 'upload-item';
-            
             item.innerHTML = `
                 <img src="${src}" alt="Audit Preview">
                 <textarea placeholder="Enter audit rating comment for this documentation..."></textarea>
             `;
-            
             uploadContainer.appendChild(item);
-        }
-
-        /* =====================================================
-           SYSTEM SETTINGS — OVERLAY OPEN / CLOSE
-        ===================================================== */
-        const overlay      = document.getElementById('system-settings-overlay');
-        const openBtn      = document.getElementById('open-settings-btn');
-        const closeBtn     = document.getElementById('close-settings-btn');
-
-        openBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            overlay.classList.add('open');
-        });
-
-        closeBtn.addEventListener('click', () => {
-            overlay.classList.remove('open');
-        });
-
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) overlay.classList.remove('open');
-        });
-
-        /* Settings Tabs */
-        document.querySelectorAll('.settings-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.settings-tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-                tab.classList.add('active');
-                document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
-            });
-        });
-
-        /* =====================================================
-           PIECE-RATED CONTRACT AUDIT LIST LOGIC
-        ===================================================== */
-        let sectorIdCounter = 0;
-
-        const sectorsContainer = document.getElementById('sectors-container');
-        const emptyState       = document.getElementById('pral-empty');
-
-        function refreshEmptyState() {
-            const hasSectors = sectorsContainer.querySelectorAll('.sector-card').length > 0;
-            emptyState.style.display = hasSectors ? 'none' : 'block';
-        }
-
-        /* ----- Add Sector ----- */
-        document.getElementById('btn-add-sector').addEventListener('click', () => {
-            addSector('New Sector', []);
-        });
-
-        function addSector(sectorName, workRows) {
-            sectorIdCounter++;
-            const sid = 'sector-' + sectorIdCounter;
-
-            const card = document.createElement('div');
-            card.className = 'sector-card';
-            card.id = sid;
-
-            card.innerHTML = `
-                <div class="sector-card-header">
-                    <input class="sector-name-input" type="text" value="${escapeAttr(sectorName)}" placeholder="Enter sector name…" />
-                    <div class="sector-actions">
-                        <button class="btn-sm btn-add-work" onclick="addWorkRow('${sid}')">
-                            <i class="fas fa-plus"></i> Add Work Description
-                        </button>
-                        <button class="btn-sm btn-delete-sector" onclick="deleteSector('${sid}')">
-                            <i class="fas fa-trash"></i> Delete
-                        </button>
-                    </div>
-                </div>
-                <div class="work-table-wrap">
-                    <table class="work-table" id="tbl-${sid}">
-                        <thead>
-                            <tr>
-                                <th style="width:5%">#</th>
-                                <th style="width:45%">Work Description</th>
-                                <th style="width:30%">Rate (RM / Unit)</th>
-                                <th style="width:20%">Content / Notes</th>
-                                <th style="width:5%"></th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody-${sid}">
-                        </tbody>
-                    </table>
-                </div>
-            `;
-
-            sectorsContainer.appendChild(card);
-
-            /* Add provided rows or one blank row by default */
-            if (workRows && workRows.length > 0) {
-                workRows.forEach(r => addWorkRow(sid, r.description, r.rate, r.content));
-            } else {
-                addWorkRow(sid);
-            }
-
-            refreshEmptyState();
-        }
-
-        function deleteSector(sid) {
-            const card = document.getElementById(sid);
-            if (card) card.remove();
-            refreshEmptyState();
-        }
-
-        /* ----- Add Work Description Row ----- */
-        let rowIdCounter = 0;
-
-        function addWorkRow(sid, description = '', rate = '', content = '') {
-            const tbody = document.getElementById('tbody-' + sid);
-            if (!tbody) return;
-
-            rowIdCounter++;
-            const rid = 'row-' + rowIdCounter;
-            const rowNum = tbody.querySelectorAll('tr').length + 1;
-
-            const tr = document.createElement('tr');
-            tr.id = rid;
-            tr.innerHTML = `
-                <td style="color:#94a3b8; font-weight:700; text-align:center;">${rowNum}</td>
-                <td><input type="text" value="${escapeAttr(description)}" placeholder="e.g. Soil sampling and analysis…" /></td>
-                <td>
-                    <div class="rate-input-wrap">
-                        <span class="rate-prefix">RM</span>
-                        <input type="number" value="${escapeAttr(rate)}" placeholder="0.00" min="0" step="0.01" style="max-width:110px;" />
-                    </div>
-                </td>
-                <td><input type="text" value="${escapeAttr(content)}" placeholder="Optional notes…" /></td>
-                <td>
-                    <button class="btn-delete-row" title="Remove row" onclick="deleteWorkRow('${rid}', '${sid}')">
-                        <i class="fas fa-times-circle"></i>
-                    </button>
-                </td>
-            `;
-
-            tbody.appendChild(tr);
-        }
-
-        function deleteWorkRow(rid, sid) {
-            const row = document.getElementById(rid);
-            if (row) row.remove();
-            /* Re-number remaining rows */
-            const tbody = document.getElementById('tbody-' + sid);
-            if (tbody) {
-                tbody.querySelectorAll('tr').forEach((tr, i) => {
-                    tr.querySelector('td:first-child').textContent = i + 1;
-                });
-            }
-        }
-
-        /* ----- Save (persist to localStorage) ----- */
-        document.getElementById('btn-save-list').addEventListener('click', () => {
-            const data = collectData();
-            try {
-                localStorage.setItem('pral_data', JSON.stringify(data));
-                showToast('List saved successfully!');
-            } catch(e) {
-                showToast('Save failed — storage unavailable.');
-            }
-        });
-
-        /* ----- Load from localStorage on page load ----- */
-        window.addEventListener('DOMContentLoaded', () => {
-            try {
-                const saved = localStorage.getItem('pral_data');
-                if (saved) {
-                    const data = JSON.parse(saved);
-                    data.forEach(s => addSector(s.sectorName, s.workRows));
-                }
-            } catch(e) { /* ignore */ }
-        });
-
-        /* ----- Export CSV ----- */
-        document.getElementById('btn-export-csv').addEventListener('click', () => {
-            const data = collectData();
-            if (data.length === 0) { showToast('Nothing to export.'); return; }
-
-            let csv = 'Sector,Work Description,Rate (RM),Content / Notes\n';
-            data.forEach(s => {
-                s.workRows.forEach(r => {
-                    csv += `"${csvEsc(s.sectorName)}","${csvEsc(r.description)}","${csvEsc(r.rate)}","${csvEsc(r.content)}"\n`;
-                });
-            });
-
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url  = URL.createObjectURL(blob);
-            const a    = document.createElement('a');
-            a.href     = url;
-            a.download = 'piece_rated_audit_list.csv';
-            a.click();
-            URL.revokeObjectURL(url);
-            showToast('CSV exported!');
-        });
-
-        /* ----- Helpers ----- */
-        function collectData() {
-            const result = [];
-            sectorsContainer.querySelectorAll('.sector-card').forEach(card => {
-                const sid         = card.id;
-                const sectorName  = card.querySelector('.sector-name-input').value.trim();
-                const workRows    = [];
-
-                document.getElementById('tbody-' + sid).querySelectorAll('tr').forEach(tr => {
-                    const inputs = tr.querySelectorAll('input');
-                    workRows.push({
-                        description: inputs[0] ? inputs[0].value.trim() : '',
-                        rate:        inputs[1] ? inputs[1].value.trim() : '',
-                        content:     inputs[2] ? inputs[2].value.trim() : ''
-                    });
-                });
-
-                result.push({ sectorName, workRows });
-            });
-            return result;
-        }
-
-        function escapeAttr(str) {
-            return String(str).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-        }
-
-        function csvEsc(str) {
-            return String(str).replace(/"/g, '""');
-        }
-
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-msg').textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2800);
         }
     </script>
 </body>
