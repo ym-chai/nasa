@@ -318,10 +318,9 @@
         }
 
         /* ============================================================
-           SYSTEM SETTINGS — NEW STYLES ONLY (nothing above changed)
+           SYSTEM SETTINGS — STYLES (NEW FEATURE INCLUDED)
         ============================================================ */
 
-        /* Overlay backdrop */
         #ss-overlay {
             display: none;
             position: fixed;
@@ -333,7 +332,6 @@
             display: block;
         }
 
-        /* Slide-in panel */
         #ss-panel {
             position: fixed;
             top: 0;
@@ -353,7 +351,6 @@
             transform: translateX(0);
         }
 
-        /* Panel header */
         .ss-header {
             background: linear-gradient(135deg, var(--primary-dark) 0%, #0f172a 100%);
             color: #fff;
@@ -393,21 +390,22 @@
         }
         .ss-close:hover { background: rgba(255,255,255,0.25); }
 
-        /* Panel body */
         .ss-body {
             flex: 1;
             overflow-y: auto;
             padding: 2rem;
         }
 
-        /* Section heading inside panel */
         .ss-section-title {
             display: flex;
             align-items: center;
             gap: 10px;
             color: var(--primary-dark);
             margin-bottom: 1.5rem;
+            margin-top: 2rem;
         }
+        .ss-section-title:first-child { margin-top: 0; }
+        
         .ss-section-title h3 {
             font-size: 1.1rem;
             font-weight: 800;
@@ -417,7 +415,6 @@
             font-size: 1.1rem;
         }
 
-        /* ---- Sector card ---- */
         .ss-sector {
             border: 1px solid #e2e8f0;
             border-radius: 14px;
@@ -454,7 +451,6 @@
             gap: 8px;
         }
 
-        /* Small action buttons */
         .ss-btn {
             display: inline-flex;
             align-items: center;
@@ -473,7 +469,6 @@
         .ss-btn-green { background: var(--primary-green); color: #fff; }
         .ss-btn-blue  { background: var(--accent-blue);   color: #fff; }
 
-        /* Work-description table */
         .ss-table {
             width: 100%;
             border-collapse: collapse;
@@ -537,7 +532,6 @@
         }
         .ss-del-row:hover { background: #fee2e2; }
 
-        /* Empty-state placeholder */
         .ss-empty {
             text-align: center;
             padding: 2.5rem 1rem;
@@ -546,7 +540,6 @@
         .ss-empty i { font-size: 2.2rem; display: block; margin-bottom: 0.7rem; }
         .ss-empty p  { font-size: 0.9rem; }
 
-        /* Bottom action bar */
         .ss-footer {
             display: flex;
             gap: 10px;
@@ -557,7 +550,14 @@
             background: #f8fafc;
         }
 
-        /* Toast */
+        /* --- NEW: Auditor List Section Specific Styles --- */
+        #auditor-list-wrap {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 1rem;
+        }
+
         #ss-toast {
             position: fixed;
             bottom: 28px;
@@ -602,7 +602,6 @@
         <a href="#" class="nav-item">
             <i class="fas fa-flask"></i> <span>Standards Lab</span>
         </a>
-        <!-- CHANGED: "System Status" → "System Settings" -->
         <a href="#" class="nav-item" id="ss-open-btn">
             <i class="fas fa-cog"></i> <span>System Settings</span>
         </a>
@@ -729,9 +728,6 @@
         </div>
     </main>
 
-    <!-- ============================================================
-         SYSTEM SETTINGS PANEL — NEW ADDITION ONLY
-    ============================================================ -->
     <div id="ss-overlay">
         <div id="ss-panel">
 
@@ -765,6 +761,37 @@
                     <p><strong>No sectors yet.</strong> Click <em>Add Sector</em> to get started.</p>
                 </div>
 
+                <hr style="margin: 2.5rem 0; border: none; border-top: 1px solid #e2e8f0;">
+
+                <div class="ss-section-title">
+                    <i class="fas fa-user-shield"></i>
+                    <h3>Auditor List</h3>
+                </div>
+
+                <div style="margin-bottom: 1.2rem;">
+                    <button class="ss-btn ss-btn-add" id="ss-add-auditor-btn">
+                        <i class="fas fa-plus-circle"></i> Add Auditor
+                    </button>
+                </div>
+
+                <div id="auditor-list-wrap">
+                    <table class="ss-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%;">#</th>
+                                <th style="width: 40%;">Sector</th>
+                                <th style="width: 48%;">Auditor Name</th>
+                                <th style="width: 7%;"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="auditor-tbody">
+                            </tbody>
+                    </table>
+                    <div id="auditor-empty-state" class="ss-empty" style="padding: 1rem;">
+                        <p>No auditors listed.</p>
+                    </div>
+                </div>
+
             </div>
 
             <div class="ss-footer">
@@ -772,7 +799,7 @@
                     <i class="fas fa-download"></i> Export CSV
                 </button>
                 <button class="ss-btn ss-btn-green" id="ss-save-btn">
-                    <i class="fas fa-save"></i> Save
+                    <i class="fas fa-save"></i> Save All
                 </button>
             </div>
 
@@ -849,10 +876,9 @@
         }
 
         /* ============================================================
-           SYSTEM SETTINGS — NEW LOGIC ONLY (nothing above changed)
+           SYSTEM SETTINGS — LOGIC (NEW AUDITOR FEATURE INCLUDED)
         ============================================================ */
 
-        /* --- open / close --- */
         var ssOverlay  = document.getElementById('ss-overlay');
         var ssOpenBtn  = document.getElementById('ss-open-btn');
         var ssCloseBtn = document.getElementById('ss-close-btn');
@@ -870,18 +896,23 @@
             if (e.target === ssOverlay) ssOverlay.classList.remove('ss-open');
         });
 
-        /* --- counters --- */
         var ssCtr  = 0;
         var ssRCtr = 0;
+        var auditRCtr = 0;
 
-        /* --- empty state --- */
         function ssCheckEmpty() {
             var wrap  = document.getElementById('ss-sectors-wrap');
             var empty = document.getElementById('ss-empty-state');
             empty.style.display = wrap.children.length === 0 ? 'block' : 'none';
         }
 
-        /* --- add sector --- */
+        function auditorCheckEmpty() {
+            var tbody = document.getElementById('auditor-tbody');
+            var empty = document.getElementById('auditor-empty-state');
+            empty.style.display = tbody.children.length === 0 ? 'block' : 'none';
+        }
+
+        /* --- PIECE-RATED LOGIC (EXISTING) --- */
         document.getElementById('ss-add-sector-btn').addEventListener('click', function() {
             ssAddSector('Sector Name', []);
         });
@@ -938,7 +969,6 @@
             ssCheckEmpty();
         }
 
-        /* --- add row --- */
         function ssAddRow(sid, desc, rate) {
             ssRCtr++;
             var rid   = 'ss-row-' + ssRCtr;
@@ -970,7 +1000,6 @@
             });
         }
 
-        /* --- renumber --- */
         function ssRenum(sid) {
             var tbody = document.getElementById('ss-tbody-' + sid);
             if (!tbody) return;
@@ -979,66 +1008,107 @@
             });
         }
 
-        /* --- collect data --- */
-        function ssCollect() {
-            var out  = [];
-            var wrap = document.getElementById('ss-sectors-wrap');
-            wrap.querySelectorAll('.ss-sector').forEach(function(card) {
-                var sid  = card.id;
-                var name = card.querySelector('.ss-sector-name').value.trim();
-                var rows = [];
-                var tbody = document.getElementById('ss-tbody-' + sid);
-                if (tbody) {
-                    tbody.querySelectorAll('tr').forEach(function(tr) {
-                        var inp = tr.querySelectorAll('input');
-                        rows.push({
-                            desc: inp[0] ? inp[0].value.trim() : '',
-                            rate: inp[1] ? inp[1].value.trim() : ''
-                        });
-                    });
-                }
-                out.push({ sectorName: name, rows: rows });
+        /* --- NEW FEATURE: AUDITOR LIST LOGIC --- */
+        document.getElementById('ss-add-auditor-btn').addEventListener('click', function() {
+            addAuditorRow('', '');
+        });
+
+        function addAuditorRow(sector, name) {
+            auditRCtr++;
+            var tbody = document.getElementById('auditor-tbody');
+            var tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="audit-rn" style="text-align:center;color:#94a3b8;font-weight:700;">-</td>
+                <td><input type="text" value="${ssEA(sector)}" placeholder="e.g. Plantation"></td>
+                <td><input type="text" value="${ssEA(name)}" placeholder="e.g. John Doe"></td>
+                <td>
+                    <button class="ss-del-row audit-drow" title="Remove">
+                        <i class="fas fa-times-circle"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+
+            tr.querySelector('.audit-drow').addEventListener('click', function() {
+                tr.remove();
+                renumAuditors();
+                auditorCheckEmpty();
             });
-            return out;
+
+            renumAuditors();
+            auditorCheckEmpty();
         }
 
-        /* --- save --- */
+        function renumAuditors() {
+            document.querySelectorAll('#auditor-tbody tr').forEach((tr, i) => {
+                tr.querySelector('.audit-rn').textContent = i + 1;
+            });
+        }
+
+        /* --- DATA MANAGEMENT --- */
+        function collectAllData() {
+            // Collect Pieces
+            var pieces = [];
+            document.querySelectorAll('.ss-sector').forEach(function(card) {
+                var name = card.querySelector('.ss-sector-name').value.trim();
+                var rows = [];
+                card.querySelectorAll('tbody tr').forEach(function(tr) {
+                    var inp = tr.querySelectorAll('input');
+                    rows.push({ desc: inp[0].value.trim(), rate: inp[1].value.trim() });
+                });
+                pieces.push({ sectorName: name, rows: rows });
+            });
+
+            // Collect Auditors
+            var auditors = [];
+            document.querySelectorAll('#auditor-tbody tr').forEach(function(tr) {
+                var inp = tr.querySelectorAll('input');
+                auditors.push({ sector: inp[0].value.trim(), name: inp[1].value.trim() });
+            });
+
+            return { pieces, auditors };
+        }
+
         document.getElementById('ss-save-btn').addEventListener('click', function() {
             try {
-                localStorage.setItem('ss_pral', JSON.stringify(ssCollect()));
-                ssToast('Saved successfully!');
+                var data = collectAllData();
+                localStorage.setItem('ss_pral', JSON.stringify(data.pieces));
+                localStorage.setItem('ss_auditors', JSON.stringify(data.auditors));
+                ssToast('All settings saved!');
             } catch(e) { ssToast('Save failed.'); }
         });
 
-        /* --- restore on load --- */
+        // Restore on Load
         (function() {
             try {
-                var raw = localStorage.getItem('ss_pral');
-                if (!raw) return;
-                JSON.parse(raw).forEach(function(s) { ssAddSector(s.sectorName, s.rows); });
+                var rawPieces = localStorage.getItem('ss_pral');
+                if (rawPieces) JSON.parse(rawPieces).forEach(s => ssAddSector(s.sectorName, s.rows));
+                
+                var rawAuditors = localStorage.getItem('ss_auditors');
+                if (rawAuditors) JSON.parse(rawAuditors).forEach(a => addAuditorRow(a.sector, a.name));
             } catch(e) {}
         })();
 
-        /* --- export CSV --- */
         document.getElementById('ss-export-btn').addEventListener('click', function() {
-            var data = ssCollect();
-            if (!data.length) { ssToast('Nothing to export.'); return; }
-            var csv = 'Sector,Work Description,Rate (RM)\n';
-            data.forEach(function(s) {
-                s.rows.forEach(function(r) {
-                    csv += '"' + ssCE(s.sectorName) + '","' + ssCE(r.desc) + '","' + ssCE(r.rate) + '"\n';
-                });
+            var data = collectAllData();
+            var csv = '--- PIECE RATES ---\nSector,Work Description,Rate (RM)\n';
+            data.pieces.forEach(s => {
+                s.rows.forEach(r => { csv += `"${ssCE(s.sectorName)}","${ssCE(r.desc)}","${ssCE(r.rate)}"\n`; });
             });
-            var a    = document.createElement('a');
-            a.href   = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
-            a.download = 'piece_rated_contract_audit_list.csv';
+            csv += '\n--- AUDITOR LIST ---\nSector,Auditor Name\n';
+            data.auditors.forEach(a => {
+                csv += `"${ssCE(a.sector)}","${ssCE(a.name)}"\n`;
+            });
+
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+            a.download = 'nasa_system_settings.csv';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
-            ssToast('CSV exported!');
+            ssToast('Settings exported!');
         });
 
-        /* --- helpers --- */
         function ssEA(s) { return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
         function ssCE(s) { return String(s).replace(/"/g,'""'); }
 
