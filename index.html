@@ -590,7 +590,7 @@
             background: #f8fafc;
         }
 
-        #auditor-list-wrap {
+        #auditor-list-wrap, #company-list-wrap {
             background: #fff;
             border: 1px solid #e2e8f0;
             border-radius: 14px;
@@ -787,6 +787,9 @@
                 <button class="ss-tab-btn" data-tab="tab-auditors">
                     <i class="fas fa-user-shield"></i> Auditor List
                 </button>
+                <button class="ss-tab-btn" data-tab="tab-companies">
+                    <i class="fas fa-building"></i> Master Company List
+                </button>
             </div>
 
             <div id="tab-pieces" class="ss-tab-content active">
@@ -836,6 +839,36 @@
                     </table>
                     <div id="auditor-empty-state" class="ss-empty" style="padding: 1rem;">
                         <p>No auditors listed.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-companies" class="ss-tab-content">
+                <div class="ss-section-title">
+                    <i class="fas fa-building"></i>
+                    <h3>Master Company List</h3>
+                </div>
+
+                <div style="margin-bottom: 1.2rem;">
+                    <button class="ss-btn ss-btn-add" id="ss-add-company-btn">
+                        <i class="fas fa-plus-circle"></i> Add Company
+                    </button>
+                </div>
+
+                <div id="company-list-wrap">
+                    <table class="ss-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 10%;">#</th>
+                                <th style="width: 83%;">Company Name</th>
+                                <th style="width: 7%;"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="company-tbody">
+                        </tbody>
+                    </table>
+                    <div id="company-empty-state" class="ss-empty" style="padding: 1rem;">
+                        <p>No companies listed.</p>
                     </div>
                 </div>
             </div>
@@ -942,7 +975,7 @@
             if (e.target === ssOverlay) ssOverlay.classList.remove('ss-open');
         });
 
-        /* --- NEW: TAB LOGIC --- */
+        /* --- TAB LOGIC --- */
         document.querySelectorAll('.ss-tab-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 // Toggle Buttons
@@ -961,6 +994,7 @@
         var ssCtr  = 0;
         var ssRCtr = 0;
         var auditRCtr = 0;
+        var companyRCtr = 0;
 
         function ssCheckEmpty() {
             var wrap  = document.getElementById('ss-sectors-wrap');
@@ -971,6 +1005,12 @@
         function auditorCheckEmpty() {
             var tbody = document.getElementById('auditor-tbody');
             var empty = document.getElementById('auditor-empty-state');
+            empty.style.display = tbody.children.length === 0 ? 'block' : 'none';
+        }
+
+        function companyCheckEmpty() {
+            var tbody = document.getElementById('company-tbody');
+            var empty = document.getElementById('company-empty-state');
             empty.style.display = tbody.children.length === 0 ? 'block' : 'none';
         }
 
@@ -1107,6 +1147,42 @@
             });
         }
 
+        /* --- MASTER COMPANY LIST LOGIC --- */
+        document.getElementById('ss-add-company-btn').addEventListener('click', function() {
+            addCompanyRow('');
+        });
+
+        function addCompanyRow(name) {
+            companyRCtr++;
+            var tbody = document.getElementById('company-tbody');
+            var tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="company-rn" style="text-align:center;color:#94a3b8;font-weight:700;">-</td>
+                <td><input type="text" value="${ssEA(name)}" placeholder="e.g. Acme Agricultural Corp"></td>
+                <td>
+                    <button class="ss-del-row company-drow" title="Remove">
+                        <i class="fas fa-times-circle"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+
+            tr.querySelector('.company-drow').addEventListener('click', function() {
+                tr.remove();
+                renumCompanies();
+                companyCheckEmpty();
+            });
+
+            renumCompanies();
+            companyCheckEmpty();
+        }
+
+        function renumCompanies() {
+            document.querySelectorAll('#company-tbody tr').forEach((tr, i) => {
+                tr.querySelector('.company-rn').textContent = i + 1;
+            });
+        }
+
         /* --- DATA MANAGEMENT --- */
         function collectAllData() {
             var pieces = [];
@@ -1126,7 +1202,13 @@
                 auditors.push({ sector: inp[0].value.trim(), name: inp[1].value.trim() });
             });
 
-            return { pieces, auditors };
+            var companies = [];
+            document.querySelectorAll('#company-tbody tr').forEach(function(tr) {
+                var inp = tr.querySelector('input');
+                companies.push({ name: inp.value.trim() });
+            });
+
+            return { pieces, auditors, companies };
         }
 
         document.getElementById('ss-save-btn').addEventListener('click', function() {
@@ -1134,6 +1216,7 @@
                 var data = collectAllData();
                 localStorage.setItem('ss_pral', JSON.stringify(data.pieces));
                 localStorage.setItem('ss_auditors', JSON.stringify(data.auditors));
+                localStorage.setItem('ss_companies', JSON.stringify(data.companies));
                 ssToast('All settings saved!');
             } catch(e) { ssToast('Save failed.'); }
         });
@@ -1146,6 +1229,9 @@
                 
                 var rawAuditors = localStorage.getItem('ss_auditors');
                 if (rawAuditors) JSON.parse(rawAuditors).forEach(a => addAuditorRow(a.sector, a.name));
+
+                var rawCompanies = localStorage.getItem('ss_companies');
+                if (rawCompanies) JSON.parse(rawCompanies).forEach(c => addCompanyRow(c.name));
             } catch(e) {}
         })();
 
@@ -1158,6 +1244,10 @@
             csv += '\n--- AUDITOR LIST ---\nSector,Auditor Name\n';
             data.auditors.forEach(a => {
                 csv += `"${ssCE(a.sector)}","${ssCE(a.name)}"\n`;
+            });
+            csv += '\n--- MASTER COMPANY LIST ---\nCompany Name\n';
+            data.companies.forEach(c => {
+                csv += `"${ssCE(c.name)}"\n`;
             });
 
             var a = document.createElement('a');
