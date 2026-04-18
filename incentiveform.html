@@ -53,9 +53,7 @@
             letter-spacing: 1px;
         }
 
-        .nav-logo i {
-            color: #4ade80;
-        }
+        .nav-logo i { color: #4ade80; }
 
         .nav-item {
             padding: 14px 18px;
@@ -84,14 +82,8 @@
             scroll-behavior: smooth;
         }
 
-        .header {
-            margin-bottom: 2rem;
-        }
-
-        .header h1 {
-            font-size: 2rem;
-            color: var(--primary-dark);
-        }
+        .header { margin-bottom: 2rem; }
+        .header h1 { font-size: 2rem; color: var(--primary-dark); }
 
         /* --- FORM STYLES --- */
         .form-container {
@@ -99,82 +91,82 @@
             padding: 2.5rem;
             border-radius: 16px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            max-width: 800px;
+            max-width: 900px;
             border: 1px solid #e2e8f0;
+            margin-bottom: 3rem;
         }
 
-        .form-section {
-            margin-bottom: 2rem;
-        }
-
+        .form-section { margin-bottom: 2rem; }
         .form-section h2 {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: var(--primary-green);
             margin-bottom: 1.2rem;
             padding-bottom: 8px;
             border-bottom: 2px solid var(--soft-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 1.5rem;
         }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .full-width { grid-column: span 3; }
 
-        .form-group.full-width {
-            grid-column: span 2;
-        }
-
-        label {
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--text-main);
-        }
-
+        label { font-weight: 600; font-size: 0.85rem; color: var(--text-main); }
         input, select, textarea {
-            padding: 12px;
+            padding: 10px;
             border: 1px solid #cbd5e0;
-            border-radius: 8px;
-            font-size: 0.95rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
             outline: none;
-            transition: border-color 0.3s;
         }
 
-        input:focus, select:focus, textarea:focus {
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.1);
-        }
-
+        .btn-group { display: flex; gap: 1rem; }
         .submit-btn {
             background-color: var(--primary-green);
             color: white;
             border: none;
-            padding: 14px 28px;
+            padding: 12px 24px;
             border-radius: 8px;
             font-weight: 700;
             cursor: pointer;
-            transition: background 0.3s;
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 1rem;
         }
 
-        .submit-btn:hover {
-            background-color: var(--primary-dark);
+        /* --- PREVIEW GENERATED FORM (PDF STYLE) --- */
+        #report-preview {
+            display: none;
+            background: white;
+            padding: 40px;
+            border: 1px solid #ddd;
+            width: 100%;
+            max-width: 800px;
+            margin-top: 20px;
+            color: #000;
+        }
+
+        .report-header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #000; padding-bottom: 10px; }
+        .report-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .report-table th, .report-table td { border: 1px solid #000; padding: 10px; text-align: left; }
+        .total-row { font-weight: bold; background: #f1f5f9; }
+
+        @media print {
+            body * { visibility: hidden; }
+            #report-preview, #report-preview * { visibility: visible; }
+            #report-preview { position: absolute; left: 0; top: 0; border: none; }
         }
 
         @media (max-width: 900px) {
-            nav { width: 80px; padding: 2rem 0.5rem; }
+            nav { width: 80px; }
             .nav-logo span, .nav-item span { display: none; }
             .form-grid { grid-template-columns: 1fr; }
-            .form-group.full-width { grid-column: span 1; }
+            .full-width { grid-column: span 1; }
         }
     </style>
 </head>
@@ -184,86 +176,166 @@
         <div class="nav-logo">
             <i class="fas fa-leaf"></i> <span>NASA</span>
         </div>
-        
-        <a href="index.html" class="nav-item">
-            <i class="fas fa-chart-pie"></i> <span>Executive Summary</span>
-        </a>
-        <a href="incentiveform.html" class="nav-item active">
-            <i class="fas fa-file-invoice-dollar"></i> <span>Incentive Claim</span>
-        </a>
-        <a href="#" class="nav-item">
-            <i class="fas fa-clipboard-check"></i> <span>Audit Protocols</span>
-        </a>
-        <a href="#" class="nav-item">
-            <i class="fas fa-cog"></i> <span>System Status</span>
-        </a>
+        <a href="index.html" class="nav-item"><i class="fas fa-chart-pie"></i> <span>Executive Summary</span></a>
+        <a href="incentiveform.html" class="nav-item active"><i class="fas fa-file-invoice-dollar"></i> <span>Incentive Claim</span></a>
+        <a href="#" class="nav-item"><i class="fas fa-clipboard-check"></i> <span>Audit Protocols</span></a>
+        <a href="#" class="nav-item"><i class="fas fa-cog"></i> <span>System Status</span></a>
     </nav>
 
     <main>
         <div class="header">
-            <h1>Auditor Incentive Claim Form</h1>
-            <p style="color: #64748b;">Submit your verified audit logs for compensation processing.</p>
+            <h1>Networked Agricultural Standards Audit (NASA)</h1>
+            <p style="color: #64748b;">Automated Claim Generation System</p>
         </div>
 
-        <form class="form-container" onsubmit="event.preventDefault(); alert('Claim submitted for processing.');">
+        <form class="form-container" id="claimForm">
             <div class="form-section">
-                <h2>Auditor Information</h2>
+                <h2>1. Audit Identification</h2>
                 <div class="form-grid">
                     <div class="form-group">
-                        <label for="auditor-name">Full Name</label>
-                        <input type="text" id="auditor-name" placeholder="John Doe" required>
+                        <label>Auditor Name</label>
+                        <select id="auditor" required>
+                            <option value="">Select Auditor...</option>
+                            <option>Manggi Anak Bai</option>
+                            <option>Tan Ke Khieng</option>
+                        </select>
                     </div>
                     <div class="form-group">
-                        <label for="auditor-id">Auditor ID</label>
-                        <input type="text" id="auditor-id" placeholder="NASA-AUD-XXXX" required>
+                        <label>Piece-Rated Contract Type</label>
+                        <select id="contractType" required>
+                            <option value="">Select Type...</option>
+                            <option value="Nursery">Nursery Operation Audit</option>
+                            <option value="Plantation">Plantation Audit</option>
+                        </select>
                     </div>
-                    <div class="form-group full-width">
-                        <label for="email">Official Email</label>
-                        <input type="email" id="email" placeholder="auditor@nasa-agri.org" required>
+                    <div class="form-group">
+                        <label>Company / Estate</label>
+                        <select id="company" required>
+                            <option value="">Select Location...</option>
+                            <option>MJM Nursery</option>
+                            <option>Estet Seri Mawar Sdn Bhd</option>
+                        </select>
                     </div>
                 </div>
             </div>
 
             <div class="form-section">
-                <h2>Claim Details</h2>
+                <h2>2. Verification Details</h2>
                 <div class="form-grid">
                     <div class="form-group">
-                        <label for="node-id">Node Reference</label>
-                        <input type="text" id="node-id" placeholder="#NODE-X20" required>
+                        <label>Audit Date</label>
+                        <input type="month" id="auditMonth" value="2026-03" required>
                     </div>
                     <div class="form-group">
-                        <label for="audit-type">Audit Category</label>
-                        <select id="audit-type">
-                            <option>Soil Moisture Variance</option>
-                            <option>Nutrient Density</option>
-                            <option>Pesticide Trace Scan</option>
-                            <option>Water Conservation</option>
-                        </select>
+                        <label>Reference No.</label>
+                        <input type="text" id="refNo" placeholder="e.g., NOA-03/2026">
                     </div>
                     <div class="form-group">
-                        <label for="date">Completion Date</label>
-                        <input type="date" id="date" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="amount">Incentive Tier</label>
-                        <select id="amount">
-                            <option value="50">Tier 1 - Standard ($50.00)</option>
-                            <option value="100">Tier 2 - Advanced ($100.00)</option>
-                            <option value="250">Tier 3 - Specialized ($250.00)</option>
-                        </select>
-                    </div>
-                    <div class="form-group full-width">
-                        <label for="summary">Audit Summary & Verification Code</label>
-                        <textarea id="summary" placeholder="Provide a brief summary of findings and the system-generated verification hash..."></textarea>
+                        <label>Total Cases</label>
+                        <input type="number" id="totalCases" placeholder="e.g., 307">
                     </div>
                 </div>
             </div>
 
-            <button type="submit" class="submit-btn">
-                <i class="fas fa-paper-plane"></i> Submit Incentive Claim
-            </button>
+            <div class="btn-group">
+                <button type="button" class="submit-btn" onclick="generateClaim()">
+                    <i class="fas fa-sync"></i> Generate Claim Form
+                </button>
+                <button type="button" class="submit-btn" style="background: var(--accent-blue);" onclick="window.print()">
+                    <i class="fas fa-print"></i> Print PDF
+                </button>
+            </div>
         </form>
+
+        <div id="report-preview">
+            <div class="report-header">
+                <h2 id="view-title">Networked Agricultural Standards Audit (NASA)</h2>
+                <h3 id="view-subtitle">Audit Report</h3>
+            </div>
+            
+            <p><strong>Ref:</strong> <span id="view-ref"></span></p>
+            <p><strong>Entity:</strong> <span id="view-company"></span></p>
+
+            <table class="report-table">
+                <tr>
+                    <td><strong>Audit Date</strong></td>
+                    <td id="view-date"></td>
+                </tr>
+                <tr>
+                    <td><strong>Total Claimable Cases</strong></td>
+                    <td id="view-cases"></td>
+                </tr>
+                <tr>
+                    <td><strong>Claimed By</strong></td>
+                    <td id="view-auditor"></td>
+                </tr>
+            </table>
+
+            <table class="report-table">
+                <thead>
+                    <tr style="background: #f8fafc;">
+                        <th>Description</th>
+                        <th>Total Cases</th>
+                        <th>Unit Price (RM)</th>
+                        <th>Amount (RM)</th>
+                    </tr>
+                </thead>
+                <tbody id="line-items">
+                    </tbody>
+                <tfoot>
+                    <tr class="total-row">
+                        <td colspan="3" style="text-align: right;">Total Claim:-</td>
+                        <td id="view-total">RM 0.00</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div style="margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; font-size: 0.8rem;">
+                <div><p>Prepared By:</p><br><br><p>________________</p><p>Chai Yik May</p></div>
+                <div><p>Verified By:</p><br><br><p>________________</p><p>Coco Lau</p></div>
+                <div><p>Approved By:</p><br><br><p>________________</p><p>Mr Pui Yuh Tzer</p></div>
+            </div>
+        </div>
     </main>
 
+    <script>
+        function generateClaim() {
+            const auditor = document.getElementById('auditor').value;
+            const type = document.getElementById('contractType').value;
+            const company = document.getElementById('company').value;
+            const cases = document.getElementById('totalCases').value || 0;
+            const month = document.getElementById('auditMonth').value;
+            const ref = document.getElementById('refNo').value;
+
+            if(!auditor || !type) { alert("Please select Auditor and Contract Type"); return; }
+
+            // Update Preview Text
+            document.getElementById('view-title').innerText = "Networked Agricultural Standards Audit (NASA)";
+            document.getElementById('view-subtitle').innerText = type + " Audit";
+            document.getElementById('view-ref').innerText = ref;
+            document.getElementById('view-company').innerText = company;
+            document.getElementById('view-date').innerText = month;
+            document.getElementById('view-cases').innerText = cases;
+            document.getElementById('view-auditor').innerText = auditor;
+
+            // Generate Logic for Line Items based on your PDF examples
+            let html = '';
+            let unitPrice = type === "Nursery" ? 2.00 : 5.00; [cite: 6, 22]
+            let total = cases * unitPrice;
+
+            if(type === "Nursery") {
+                html = `<tr><td>Operation Audit Items</td><td>${cases}</td><td>${unitPrice.toFixed(2)}</td><td>${total.toFixed(2)}</td></tr>`;
+            } else {
+                html = `<tr><td>Field/Road Condition Audit</td><td>${cases}</td><td>${unitPrice.toFixed(2)}</td><td>${total.toFixed(2)}</td></tr>`;
+            }
+
+            document.getElementById('line-items').innerHTML = html;
+            document.getElementById('view-total').innerText = "RM " + total.toFixed(2);
+            document.getElementById('report-preview').style.display = 'block';
+            
+            // Smooth scroll to preview
+            document.getElementById('report-preview').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
