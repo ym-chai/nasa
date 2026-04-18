@@ -390,7 +390,7 @@
         }
         .ss-close:hover { background: rgba(255,255,255,0.25); }
 
-        /* --- NEW: TAB SYSTEM STYLES --- */
+        /* --- TAB SYSTEM STYLES --- */
         .ss-tabs {
             display: flex;
             background: #f1f5f9;
@@ -590,7 +590,7 @@
             background: #f8fafc;
         }
 
-        #auditor-list-wrap, #company-list-wrap {
+        #auditor-list-wrap, #auditee-list-wrap {
             background: #fff;
             border: 1px solid #e2e8f0;
             border-radius: 14px;
@@ -787,8 +787,8 @@
                 <button class="ss-tab-btn" data-tab="tab-auditors">
                     <i class="fas fa-user-shield"></i> Auditor List
                 </button>
-                <button class="ss-tab-btn" data-tab="tab-companies">
-                    <i class="fas fa-building"></i> Master Company List
+                <button class="ss-tab-btn" data-tab="tab-auditees">
+                    <i class="fas fa-building"></i> Auditee List
                 </button>
             </div>
 
@@ -843,32 +843,33 @@
                 </div>
             </div>
 
-            <div id="tab-companies" class="ss-tab-content">
+            <div id="tab-auditees" class="ss-tab-content">
                 <div class="ss-section-title">
                     <i class="fas fa-building"></i>
-                    <h3>Master Company List</h3>
+                    <h3>Auditee List</h3>
                 </div>
 
                 <div style="margin-bottom: 1.2rem;">
-                    <button class="ss-btn ss-btn-add" id="ss-add-company-btn">
-                        <i class="fas fa-plus-circle"></i> Add Company
+                    <button class="ss-btn ss-btn-add" id="ss-add-auditee-btn">
+                        <i class="fas fa-plus-circle"></i> Add Auditee
                     </button>
                 </div>
 
-                <div id="company-list-wrap">
+                <div id="auditee-list-wrap">
                     <table class="ss-table">
                         <thead>
                             <tr>
-                                <th style="width: 10%;">#</th>
-                                <th style="width: 83%;">Company Name</th>
+                                <th style="width: 5%;">#</th>
+                                <th style="width: 40%;">Sector</th>
+                                <th style="width: 48%;">Company Name</th>
                                 <th style="width: 7%;"></th>
                             </tr>
                         </thead>
-                        <tbody id="company-tbody">
+                        <tbody id="auditee-tbody">
                         </tbody>
                     </table>
-                    <div id="company-empty-state" class="ss-empty" style="padding: 1rem;">
-                        <p>No companies listed.</p>
+                    <div id="auditee-empty-state" class="ss-empty" style="padding: 1rem;">
+                        <p>No auditees listed.</p>
                     </div>
                 </div>
             </div>
@@ -994,7 +995,7 @@
         var ssCtr  = 0;
         var ssRCtr = 0;
         var auditRCtr = 0;
-        var companyRCtr = 0;
+        var auditeeRCtr = 0;
 
         function ssCheckEmpty() {
             var wrap  = document.getElementById('ss-sectors-wrap');
@@ -1008,9 +1009,9 @@
             empty.style.display = tbody.children.length === 0 ? 'block' : 'none';
         }
 
-        function companyCheckEmpty() {
-            var tbody = document.getElementById('company-tbody');
-            var empty = document.getElementById('company-empty-state');
+        function auditeeCheckEmpty() {
+            var tbody = document.getElementById('auditee-tbody');
+            var empty = document.getElementById('auditee-empty-state');
             empty.style.display = tbody.children.length === 0 ? 'block' : 'none';
         }
 
@@ -1147,39 +1148,40 @@
             });
         }
 
-        /* --- MASTER COMPANY LIST LOGIC --- */
-        document.getElementById('ss-add-company-btn').addEventListener('click', function() {
-            addCompanyRow('');
+        /* --- AUDITEE LIST LOGIC (Updated to include Sector) --- */
+        document.getElementById('ss-add-auditee-btn').addEventListener('click', function() {
+            addAuditeeRow('', '');
         });
 
-        function addCompanyRow(name) {
-            companyRCtr++;
-            var tbody = document.getElementById('company-tbody');
+        function addAuditeeRow(sector, name) {
+            auditeeRCtr++;
+            var tbody = document.getElementById('auditee-tbody');
             var tr = document.createElement('tr');
             tr.innerHTML = `
-                <td class="company-rn" style="text-align:center;color:#94a3b8;font-weight:700;">-</td>
+                <td class="auditee-rn" style="text-align:center;color:#94a3b8;font-weight:700;">-</td>
+                <td><input type="text" value="${ssEA(sector)}" placeholder="e.g. Fruit Region"></td>
                 <td><input type="text" value="${ssEA(name)}" placeholder="e.g. Acme Agricultural Corp"></td>
                 <td>
-                    <button class="ss-del-row company-drow" title="Remove">
+                    <button class="ss-del-row auditee-drow" title="Remove">
                         <i class="fas fa-times-circle"></i>
                     </button>
                 </td>
             `;
             tbody.appendChild(tr);
 
-            tr.querySelector('.company-drow').addEventListener('click', function() {
+            tr.querySelector('.auditee-drow').addEventListener('click', function() {
                 tr.remove();
-                renumCompanies();
-                companyCheckEmpty();
+                renumAuditees();
+                auditeeCheckEmpty();
             });
 
-            renumCompanies();
-            companyCheckEmpty();
+            renumAuditees();
+            auditeeCheckEmpty();
         }
 
-        function renumCompanies() {
-            document.querySelectorAll('#company-tbody tr').forEach((tr, i) => {
-                tr.querySelector('.company-rn').textContent = i + 1;
+        function renumAuditees() {
+            document.querySelectorAll('#auditee-tbody tr').forEach((tr, i) => {
+                tr.querySelector('.auditee-rn').textContent = i + 1;
             });
         }
 
@@ -1202,13 +1204,13 @@
                 auditors.push({ sector: inp[0].value.trim(), name: inp[1].value.trim() });
             });
 
-            var companies = [];
-            document.querySelectorAll('#company-tbody tr').forEach(function(tr) {
-                var inp = tr.querySelector('input');
-                companies.push({ name: inp.value.trim() });
+            var auditees = [];
+            document.querySelectorAll('#auditee-tbody tr').forEach(function(tr) {
+                var inp = tr.querySelectorAll('input');
+                auditees.push({ sector: inp[0].value.trim(), name: inp[1].value.trim() });
             });
 
-            return { pieces, auditors, companies };
+            return { pieces, auditors, auditees };
         }
 
         document.getElementById('ss-save-btn').addEventListener('click', function() {
@@ -1216,7 +1218,7 @@
                 var data = collectAllData();
                 localStorage.setItem('ss_pral', JSON.stringify(data.pieces));
                 localStorage.setItem('ss_auditors', JSON.stringify(data.auditors));
-                localStorage.setItem('ss_companies', JSON.stringify(data.companies));
+                localStorage.setItem('ss_auditees', JSON.stringify(data.auditees));
                 ssToast('All settings saved!');
             } catch(e) { ssToast('Save failed.'); }
         });
@@ -1230,8 +1232,8 @@
                 var rawAuditors = localStorage.getItem('ss_auditors');
                 if (rawAuditors) JSON.parse(rawAuditors).forEach(a => addAuditorRow(a.sector, a.name));
 
-                var rawCompanies = localStorage.getItem('ss_companies');
-                if (rawCompanies) JSON.parse(rawCompanies).forEach(c => addCompanyRow(c.name));
+                var rawAuditees = localStorage.getItem('ss_auditees');
+                if (rawAuditees) JSON.parse(rawAuditees).forEach(c => addAuditeeRow(c.sector, c.name));
             } catch(e) {}
         })();
 
@@ -1245,9 +1247,9 @@
             data.auditors.forEach(a => {
                 csv += `"${ssCE(a.sector)}","${ssCE(a.name)}"\n`;
             });
-            csv += '\n--- MASTER COMPANY LIST ---\nCompany Name\n';
-            data.companies.forEach(c => {
-                csv += `"${ssCE(c.name)}"\n`;
+            csv += '\n--- AUDITEE LIST ---\nSector,Company Name\n';
+            data.auditees.forEach(c => {
+                csv += `"${ssCE(c.sector)}","${ssCE(c.name)}"\n`;
             });
 
             var a = document.createElement('a');
