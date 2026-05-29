@@ -178,7 +178,6 @@
         </div>
         <a href="index.html" class="nav-item"><i class="fas fa-chart-pie"></i> <span>Executive Summary</span></a>
         <a href="incentiveform.html" class="nav-item active"><i class="fas fa-file-invoice-dollar"></i> <span>Incentive Claim</span></a>
-        <a href="#" class="nav-item"><i class="fas fa-clipboard-check"></i> <span>Audit Protocols</span></a>
         <a href="index.html" class="nav-item"><i class="fas fa-cog"></i> <span>System Settings</span></a>
     </nav>
 
@@ -299,6 +298,25 @@
     </main>
 
     <script>
+        // --- PLUG IN PIECE-RATED CONTRACTS FROM index.html (localStorage: ss_pieces) ---
+        window.addEventListener('DOMContentLoaded', () => {
+            const saved = JSON.parse(localStorage.getItem('ss_pieces') || '[]');
+            const select = document.getElementById('contractType');
+            const existingValues = new Set([...select.options].map(o => o.value));
+            saved.forEach(s => {
+                if (s.sector && !existingValues.has(s.sector)) {
+                    const opt = document.createElement('option');
+                    opt.value = s.sector;
+                    opt.textContent = s.sector;
+                    if (s.rows && s.rows[0] && s.rows[0].rate) {
+                        opt.dataset.rate = s.rows[0].rate;
+                    }
+                    select.appendChild(opt);
+                    existingValues.add(s.sector);
+                }
+            });
+        });
+
         function generateClaim() {
             const auditor = document.getElementById('auditor').value;
             const type = document.getElementById('contractType').value;
