@@ -622,17 +622,14 @@
             <i class="fas fa-leaf"></i> <span>NASA</span>
         </div>
         
-        <a href="index.html" class="nav-item active">
+        <a href="index.html" class="nav-item active" id="nav-summary-btn">
             <i class="fas fa-chart-pie"></i> <span>Executive Summary</span>
         </a>
         <a href="incentiveform.html" class="nav-item">
             <i class="fas fa-file-invoice-dollar"></i> <span>Incentive Claim</span>
         </a>
-        <a href="#" class="nav-item">
-            <i class="fas fa-clipboard-check"></i> <span>Audit Protocols</span>
-        </a>
-        <a href="#" class="nav-item">
-            <i class="fas fa-flask"></i> <span>Standards Lab</span>
+        <a href="#" class="nav-item" id="nav-piece-rated-btn">
+            <i class="fas fa-flask"></i> <span>Piece-Rated Contracts</span>
         </a>
         <a href="#" class="nav-item" id="ss-open-btn">
             <i class="fas fa-cog"></i> <span>System Settings</span>
@@ -657,43 +654,58 @@
             </div>
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="icon-box green-box"><i class="fas fa-seedling"></i></div>
-                <h3>Active Compliance</h3>
-                <div class="value">98.4%</div>
+        <div class="page-view" id="page-summary">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="icon-box green-box"><i class="fas fa-seedling"></i></div>
+                    <h3>Active Compliance</h3>
+                    <div class="value">98.4%</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon-box blue-box"><i class="fas fa-broadcast-tower"></i></div>
+                    <h3>Network Nodes</h3>
+                    <div class="value">14,209</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon-box orange-box"><i class="fas fa-images"></i></div>
+                    <h3>Photos Uploaded</h3>
+                    <div class="value" id="photo-counter">0</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon-box green-box"><i class="fas fa-check-double"></i></div>
+                    <h3>Audits Verified</h3>
+                    <div class="value">2.4M</div>
+                </div>
             </div>
 
-            <div class="stat-card">
-                <div class="icon-box blue-box"><i class="fas fa-broadcast-tower"></i></div>
-                <h3>Network Nodes</h3>
-                <div class="value">14,209</div>
-            </div>
-
-            <div class="stat-card">
-                <div class="icon-box orange-box"><i class="fas fa-images"></i></div>
-                <h3>Photos Uploaded</h3>
-                <div class="value" id="photo-counter">0</div>
-            </div>
-
-            <div class="stat-card">
-                <div class="icon-box green-box"><i class="fas fa-check-double"></i></div>
-                <h3>Audits Verified</h3>
-                <div class="value">2.4M</div>
+            <div class="content-section">
+                <div class="section-title">
+                    <i class="fas fa-camera"></i>
+                    <h2>Field Audit Documentation</h2>
+                </div>
+                <div id="drop-zone">
+                    <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                    <p>Drag and drop field photos here to begin audit rating</p>
+                    <input type="file" id="file-input" multiple accept="image/*" style="display: none;">
+                </div>
+                <div id="upload-container"></div>
             </div>
         </div>
 
-        <div class="content-section">
-            <div class="section-title">
-                <i class="fas fa-camera"></i>
-                <h2>Field Audit Documentation</h2>
+        <div class="page-view" id="page-piece-rated" style="display: none;">
+            <div class="content-section" id="piece-rated-section">
+                <div class="section-title">
+                    <i class="fas fa-file-contract"></i>
+                    <h2>Piece-Rated Contract Audit List</h2>
+                </div>
+                <button class="ss-btn ss-btn-add" id="ss-add-sector-btn"><i class="fas fa-plus-circle"></i> Add Sector</button>
+                <button class="ss-btn ss-btn-blue" id="pr-export-btn" style="margin-left: 8px;"><i class="fas fa-download"></i> Export CSV</button>
+                <button class="ss-btn ss-btn-green" id="pr-save-btn" style="margin-left: 8px;"><i class="fas fa-save"></i> Save</button>
+                <div id="ss-sectors-wrap" style="margin-top: 1rem;"></div>
             </div>
-            <div id="drop-zone">
-                <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; margin-bottom: 1rem;"></i>
-                <p>Drag and drop field photos here to begin audit rating</p>
-                <input type="file" id="file-input" multiple accept="image/*" style="display: none;">
-            </div>
-            <div id="upload-container"></div>
         </div>
     </main>
 
@@ -708,10 +720,7 @@
             </div>
 
             <div class="ss-tabs">
-                <button class="ss-tab-btn active" data-tab="tab-pieces">
-                    <i class="fas fa-file-contract"></i> Piece-Rated Contracts
-                </button>
-                <button class="ss-tab-btn" data-tab="tab-auditors">
+                <button class="ss-tab-btn active" data-tab="tab-auditors">
                     <i class="fas fa-user-shield"></i> Auditor List
                 </button>
                 <button class="ss-tab-btn" data-tab="tab-auditees">
@@ -719,16 +728,7 @@
                 </button>
             </div>
 
-            <div id="tab-pieces" class="ss-tab-content active">
-                <div class="ss-section-title">
-                    <i class="fas fa-file-contract"></i>
-                    <h3>Piece-Rated Contract Audit List</h3>
-                </div>
-                <button class="ss-btn ss-btn-add" id="ss-add-sector-btn"><i class="fas fa-plus-circle"></i> Add Sector</button>
-                <div id="ss-sectors-wrap" style="margin-top: 1rem;"></div>
-            </div>
-
-            <div id="tab-auditors" class="ss-tab-content">
+            <div id="tab-auditors" class="ss-tab-content active">
                 <div class="ss-section-title">
                     <i class="fas fa-user-shield"></i>
                     <h3>Auditor List</h3>
@@ -795,6 +795,26 @@
 
         ssOpenBtn.onclick = (e) => { e.preventDefault(); ssOverlay.classList.add('ss-open'); };
         ssCloseBtn.onclick = () => ssOverlay.classList.remove('ss-open');
+
+        // --- PAGE VIEW SWITCHER ---
+        const pageSummary = document.getElementById('page-summary'),
+              pagePieceRated = document.getElementById('page-piece-rated'),
+              navSummaryBtn = document.getElementById('nav-summary-btn'),
+              navPieceRatedBtn = document.getElementById('nav-piece-rated-btn');
+
+        function switchPage(target) {
+            pageSummary.style.display = (target === 'summary') ? '' : 'none';
+            pagePieceRated.style.display = (target === 'piece') ? '' : 'none';
+            navSummaryBtn.classList.toggle('active', target === 'summary');
+            navPieceRatedBtn.classList.toggle('active', target === 'piece');
+        }
+
+        navSummaryBtn.onclick = (e) => { e.preventDefault(); switchPage('summary'); };
+        navPieceRatedBtn.onclick = (e) => { e.preventDefault(); switchPage('piece'); };
+
+        // --- PIECE-RATED PAGE: delegate to existing System Settings handlers ---
+        document.getElementById('pr-save-btn').onclick = () => document.getElementById('ss-save-btn').click();
+        document.getElementById('pr-export-btn').onclick = () => document.getElementById('ss-export-btn').click();
 
         document.querySelectorAll('.ss-tab-btn').forEach(btn => {
             btn.onclick = function() {
